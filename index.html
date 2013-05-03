@@ -9,7 +9,7 @@
       <blockquote>{{ greeting.content|escape }}</blockquote>
     {% endfor %} -->
 
-    <form action="/submit" method="post">
+    <form action="/" method="post">
       <div>Location: <textarea name="location" rows="1" cols="60"></textarea></div>
       <div>Category: <textarea name="category" rows="1" cols="60"></textarea></div>
       <br></br>
@@ -19,10 +19,12 @@
     <hr>
     
     <div id = "result">
+       lat :  {{ lat }}
       <div id = "google">
       </div>
-
+        lng : {{ lng }}
       <div id = "Twitter">
+          twit : {{ twitest }}
       </div>
 
     </div>

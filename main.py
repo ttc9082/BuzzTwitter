@@ -8,6 +8,7 @@ import webapp2
 
 from client import *
 from data_store import *
+from buzz_generator import *
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -21,19 +22,30 @@ class MainPage(webapp2.RequestHandler):
     def post(self):
         category = self.request.get('category')
         address = self.request.get('location').replace(" ", "+")
+
         NUMBER_PER_PAGE = '5'
+        NUMBER_OF_BUZZ = 2
 
         # twitest = sync_twits(category, address, NUMBER_PER_PAGE)
         if has_key(address, category):
             jsonstr = retrieve_data(address, category)
         else:
             jsonstr = sync_twits(category, address, NUMBER_PER_PAGE)
-            # print twitest
             store_data(address, category, jsonstr)
 
-        print jsonstr
         twi_json = json.loads(jsonstr)
         twitest = twi_json['results']
+
+
+        
+        buzz_words = generate_buzz(NUMBER_OF_BUZZ)
+
+
+
+
+
+
+
         
         template_values = {
                             'twitest': twitest,

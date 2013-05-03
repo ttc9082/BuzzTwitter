@@ -9,11 +9,13 @@ import urllib
 import json
 import webapp2
 
+
 from google.appengine.ext import db
 from google.appengine.api import users
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+
 
 MAIN_PAGE_FOOTER_TEMPLATE = """\
     <form action="/sign?%s" method="post">
@@ -28,12 +30,13 @@ MAIN_PAGE_FOOTER_TEMPLATE = """\
 """
 
 class twitter(db.Model):
-    results = db.StringProperty(multiline=True)
+    results = db.TextProperty()
     date = db.DateTimeProperty(auto_now_add=True)
 
 def twitter_key(twitter_name=None):
     """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
     return db.Key.from_path('twitter', twitter_name or 'default')
+
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -46,6 +49,12 @@ class MainPage(webapp2.RequestHandler):
     def post(self):
         category = self.request.get('category')
         address = self.request.get('location')
+        key_name = category + address
+        twitters = db.GqlQuery("SELECT * "
+                                "FROM twitter "
+                                "WHERE ANCESTOR IS :1 "
+                                "ORDER BY date DESC LIMIT 10",
+                                twitter_key(key_name))
         d = address.split(' ')
         s = ''
         for word in d:
@@ -58,29 +67,22 @@ class MainPage(webapp2.RequestHandler):
         lat = geo_json['results'][0]['geometry']['location']['lat']
         lng = geo_json['results'][0]['geometry']['location']['lng']
         twi_url = 'http://search.twitter.com/search.json?q=' + category + \
-                 '&rpp=5&geocode=' \
-                 + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
-                 + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
-                 + '500mi' + '&include_entities=true&result_type=mixed'
-        twi_json = json.load(urllib.urlopen(twi_url))
-        twitest = twi_json['results'][1]
-        '''
-        key_name = category + address
-        self.response.write(category)
+                     '&rpp=5&geocode=' \
+                     + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
+                     + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
+                     + '500mi' + '&include_entities=true&result_type=mixed&lang=en'
+
         twi = twitter(parent=twitter_key(key_name))
-        twi.results = self.request.get('content')
+        twi.results = urllib.urlopen(twi_url).read()
         twi.put()
-        twitters = db.GqlQuery("SELECT * "
-                                "FROM twitter "
-                                "WHERE ANCESTOR IS :1 "
-                                "ORDER BY date DESC LIMIT 10",
-                                twitter_key(key_name))
-        twitters'''
+        twi_json = json.load(twitters[0].results)
+        twitest = twi_json['results'][1]
+
         template_values = {
-            'lat': lat,
-            'lng': lng,
-            'twitest' : twitest, 
-        }
+                            'lat': lat,
+                            'lng': lng,
+                            'twitest': twitest,
+                            }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
@@ -89,7 +91,8 @@ class MainPage(webapp2.RequestHandler):
         greeting.put()
 
         query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))'''
+        self.redirect('/?' + urllib.urlencode(query_params))
+'''
 
 
 app = webapp2.WSGIApplication([('/', MainPage)],

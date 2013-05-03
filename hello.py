@@ -56,6 +56,7 @@ class MainPage(webapp2.RequestHandler):
                                 "ORDER BY date DESC LIMIT 10",
                                 twitter_key(key_name))
         d = address.split(' ')
+        number = '5'
         s = ''
         for word in d:
             if s == '':
@@ -67,11 +68,26 @@ class MainPage(webapp2.RequestHandler):
         lat = geo_json['results'][0]['geometry']['location']['lat']
         lng = geo_json['results'][0]['geometry']['location']['lng']
         twi_url = 'http://search.twitter.com/search.json?q=' + category + \
-                     '&rpp=5&geocode=' \
-                     + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
-                     + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
-                     + '500mi' + '&include_entities=true&result_type=mixed&lang=en'
+                 '&rpp=' + number + '&geocode=' \
+                 + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
+                 + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
+                 + '500mi' + '&include_entities=true&result_type=mixed'
 
+        twi_json = json.load(urllib.urlopen(twi_url))
+        twitest = twi_json['results']
+        twi_num = len(twitest)
+
+        # for twit in twitest:
+        #     print twittwittwittwittwittwit['id']
+        #     print twittwittwittwittwit['from_user_name'] or ""
+        #     print twittwittwittwit['text'] or ""
+        #     print twittwittwit['created_at'] or ""
+        #     print twittwit['location'] or ""
+        #     print twit['profile_image_url'] or ""
+
+        '''
+        key_name = category + address
+        self.response.write(category)
         twi = twitter(parent=twitter_key(key_name))
         twi.results = urllib.urlopen(twi_url).read()
         twi.put()

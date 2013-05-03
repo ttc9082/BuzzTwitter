@@ -7,11 +7,13 @@ import urllib
 import json
 import webapp2
 
+
 from google.appengine.ext import db
 from google.appengine.api import users
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
+
 
 MAIN_PAGE_FOOTER_TEMPLATE = """\
     <form action="/sign?%s" method="post">
@@ -26,12 +28,13 @@ MAIN_PAGE_FOOTER_TEMPLATE = """\
 """
 
 class twitter(db.Model):
-    results = db.StringProperty(multiline=True)
+    results = db.TextProperty()
     date = db.DateTimeProperty(auto_now_add=True)
 
 def twitter_key(twitter_name=None):
     """Constructs a Datastore key for a Guestbook entity with guestbook_name."""
     return db.Key.from_path('twitter', twitter_name or 'default')
+
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
@@ -45,7 +48,6 @@ class MainPage(webapp2.RequestHandler):
         address = self.request.get('location').replace(" ", "+")
 
         NUMBER_PER_PAGE = '5'
-
         geo_url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=true'
         geo_json = json.load(urllib.urlopen(geo_url))
         lat = geo_json['results'][0]['geometry']['location']['lat']
@@ -63,7 +65,7 @@ class MainPage(webapp2.RequestHandler):
         key_name = category + address
         self.response.write(category)
         twi = twitter(parent=twitter_key(key_name))
-        twi.results = self.request.get('content')
+        twi.results = urllib.urlopen(twi_url).read()
         twi.put()
         twitters = db.GqlQuery("SELECT * "
                                 "FROM twitter "
@@ -71,16 +73,11 @@ class MainPage(webapp2.RequestHandler):
                                 "ORDER BY date DESC LIMIT 10",
                                 twitter_key(key_name))
         twitters'''
-
-
-        twi_num = len(twitest)
-
-
         template_values = {
-            'lat': lat,
-            'lng': lng,
-            'twitest' : twitest, 
-        }
+                            'lat': lat,
+                            'lng': lng,
+                            'twitest': twitest,
+                            }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
@@ -89,7 +86,8 @@ class MainPage(webapp2.RequestHandler):
         greeting.put()
 
         query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))'''
+        self.redirect('/?' + urllib.urlencode(query_params))
+'''
 
 
 app = webapp2.WSGIApplication([('/', MainPage)],

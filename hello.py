@@ -46,11 +46,24 @@ class MainPage(webapp2.RequestHandler):
     def post(self):
         category = self.request.get('category')
         address = self.request.get('location')
-        geourl = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + '1600+Amphitheatre+Parkway,+Mountain+View,+CA&sensor=true'
-        get = urllib.urlopen(geourl)
-        output_json = json.load(get)
-        lat = output_json['results'][0]['geometry']['location']['lat']
-        lng = output_json['results'][0]['geometry']['location']['lng']
+        d = address.split(' ')
+        s = ''
+        for word in d:
+            if s == '':
+                s = word
+            else:
+                s = s + '+' + word
+        geo_url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + s + '&sensor=true'
+        geo_json = json.load(urllib.urlopen(geo_url))
+        lat = geo_json['results'][0]['geometry']['location']['lat']
+        lng = geo_json['results'][0]['geometry']['location']['lng']
+        twi_url = 'http://search.twitter.com/search.json?q=' + category + \
+                 '&rpp=5&geocode=' \
+                 + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
+                 + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
+                 + '500mi' + '&include_entities=true&result_type=mixed'
+        twi_json = json.load(urllib.urlopen(twi_url))
+        twitest = twi_json['results'][1]
         '''
         key_name = category + address
         self.response.write(category)
@@ -65,7 +78,8 @@ class MainPage(webapp2.RequestHandler):
         twitters'''
         template_values = {
             'lat': lat,
-            'lng': lng,    
+            'lng': lng,
+            'twitest' : twitest, 
         }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')

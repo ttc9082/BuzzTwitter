@@ -47,6 +47,7 @@ class MainPage(webapp2.RequestHandler):
         category = self.request.get('category')
         address = self.request.get('location')
         d = address.split(' ')
+        number = '5'
         s = ''
         for word in d:
             if s == '':
@@ -58,12 +59,24 @@ class MainPage(webapp2.RequestHandler):
         lat = geo_json['results'][0]['geometry']['location']['lat']
         lng = geo_json['results'][0]['geometry']['location']['lng']
         twi_url = 'http://search.twitter.com/search.json?q=' + category + \
-                 '&rpp=5&geocode=' \
+                 '&rpp=' + number + '&geocode=' \
                  + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
                  + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
-                 + '500mi' + '&include_entities=true&result_type=mixed'
+                 + '500mi' + '&include_entities=true&result_type=mixed&lang=en'
+
         twi_json = json.load(urllib.urlopen(twi_url))
-        twitest = twi_json['results'][1]
+        twitest = twi_json['results']
+
+        twi_num = len(twitest)
+
+        # for each_twi in twitest:
+        #     print each_twi['id']
+        #     print each_twi['from_user_name'] or ""
+        #     print each_twi['text'] or ""
+        #     print each_twi['created_at'] or ""
+        #     print each_twi['location'] or ""
+        #     print each_twi['profile_image_url'] or ""
+
         '''
         key_name = category + address
         self.response.write(category)

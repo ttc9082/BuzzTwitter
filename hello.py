@@ -3,8 +3,6 @@ import datetime
 import jinja2
 import os
 
-
-
 import urllib
 import json
 import webapp2
@@ -37,44 +35,29 @@ def twitter_key(twitter_name=None):
 
 class MainPage(webapp2.RequestHandler):
     def get(self):
-        template_values = {
-        }
+        template_values = {}
 
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
     def post(self):
         category = self.request.get('category')
-        address = self.request.get('location')
-        d = address.split(' ')
-        number = '5'
-        s = ''
-        for word in d:
-            if s == '':
-                s = word
-            else:
-                s = s + '+' + word
-        geo_url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + s + '&sensor=true'
+        address = self.request.get('location').replace(" ", "+")
+
+        NUMBER_PER_PAGE = '5'
+
+        geo_url = 'http://maps.googleapis.com/maps/api/geocode/json?address=' + address + '&sensor=true'
         geo_json = json.load(urllib.urlopen(geo_url))
         lat = geo_json['results'][0]['geometry']['location']['lat']
         lng = geo_json['results'][0]['geometry']['location']['lng']
         twi_url = 'http://search.twitter.com/search.json?q=' + category + \
-                 '&rpp=' + number + '&geocode=' \
+                 '&rpp=' + NUMBER_PER_PAGE + '&geocode=' \
                  + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
                  + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
                  + '500mi' + '&include_entities=true&result_type=mixed'
 
         twi_json = json.load(urllib.urlopen(twi_url))
         twitest = twi_json['results']
-        twi_num = len(twitest)
-
-        # for twit in twitest:
-        #     print twittwittwittwittwittwit['id']
-        #     print twittwittwittwittwit['from_user_name'] or ""
-        #     print twittwittwittwit['text'] or ""
-        #     print twittwittwit['created_at'] or ""
-        #     print twittwit['location'] or ""
-        #     print twit['profile_image_url'] or ""
 
         '''
         key_name = category + address
@@ -88,6 +71,11 @@ class MainPage(webapp2.RequestHandler):
                                 "ORDER BY date DESC LIMIT 10",
                                 twitter_key(key_name))
         twitters'''
+
+
+        twi_num = len(twitest)
+
+
         template_values = {
             'lat': lat,
             'lng': lng,

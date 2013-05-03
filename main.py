@@ -34,18 +34,15 @@ class MainPage(webapp2.RequestHandler):
             store_data(address, category, jsonstr)
 
         twi_json = json.loads(jsonstr)
-        twitest = twi_json['results']
-
-
         
-        buzz_words = generate_buzz(twitest, NUMBER_OF_BUZZ)
+        buzz_words = generate_buzz(jsonstr, NUMBER_OF_BUZZ)
 
 
 
 
 
 
-
+        twitest = twi_json['results']
         
         template_values = {
                             'twitest': twitest,

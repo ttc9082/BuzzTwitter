@@ -62,20 +62,19 @@ class MainPage(webapp2.RequestHandler):
                  '&rpp=' + number + '&geocode=' \
                  + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
                  + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
-                 + '500mi' + '&include_entities=true&result_type=mixed&lang=en'
+                 + '500mi' + '&include_entities=true&result_type=mixed'
 
         twi_json = json.load(urllib.urlopen(twi_url))
         twitest = twi_json['results']
-
         twi_num = len(twitest)
 
-        # for each_twi in twitest:
-        #     print each_twi['id']
-        #     print each_twi['from_user_name'] or ""
-        #     print each_twi['text'] or ""
-        #     print each_twi['created_at'] or ""
-        #     print each_twi['location'] or ""
-        #     print each_twi['profile_image_url'] or ""
+        # for twit in twitest:
+        #     print twittwittwittwittwittwit['id']
+        #     print twittwittwittwittwit['from_user_name'] or ""
+        #     print twittwittwittwit['text'] or ""
+        #     print twittwittwit['created_at'] or ""
+        #     print twittwit['location'] or ""
+        #     print twit['profile_image_url'] or ""
 
         '''
         key_name = category + address

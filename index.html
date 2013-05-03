@@ -1,4 +1,19 @@
 <html>
+
+<head>
+  <style>
+    table
+      {
+        border-collapse:collapse;
+      }
+    table, td, th
+      {
+        border:1px solid black;
+      }
+  </style>
+</head>
+
+
   <body>
 <!--     {% for greeting in greetings %}
       {% if greeting.author %}
@@ -21,8 +36,34 @@
     <div id = "result">
       lat :  {{ lat }}
       lng : {{ lng }}
-      twit : {{ twitest }}
 
+
+
+      <table>
+
+        <tr>
+          <th>id</th>
+          <th>from_user_name</th>
+          <th>text</th>
+          <th>created_at</th>
+          <th>location</th>
+          <th>profile_image</th>
+        </tr>
+
+        {% for twit in twitest %}
+          <tr>
+            <td>{{ twit['id'] }} </td>
+            <td>{{ twit['from_user_name'] or "" }} </td>
+            <td>{{ twit['text'] or "" }} </td>
+            <td>{{ twit['created_at'] or "" }} </td>
+            <td>{{ twit['location'] or "" }} </td>
+            <td><img src={{ twit['profile_image_url'] or "" }}> </td>
+          </tr>
+        {% endfor %} 
+
+      </table> 
+
+      <!-- twit : {{ twitest }} -->
     </div>
 
   </body>

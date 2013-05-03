@@ -71,12 +71,10 @@ class MainPage(webapp2.RequestHandler):
         template = JINJA_ENVIRONMENT.get_template('index.html')
         self.response.write(template.render(template_values))
 
-        greeting.content = self.request.get('content')
-        greeting.put()
-
-        query_params = {'guestbook_name': guestbook_name}
-        self.redirect('/?' + urllib.urlencode(query_params))
-
-
+<<<<<<< HEAD
+app = webapp2.WSGIApplication([('/', MainPage),
+                               ('/submit', MainPage)],
+=======
 app = webapp2.WSGIApplication([('/', MainPage)],
+>>>>>>> cf5124e8790a7e5c7cfc011a29990c5dc700357e
                               debug=True)

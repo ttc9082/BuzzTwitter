@@ -38,7 +38,7 @@ class MainPage(webapp2.RequestHandler):
 
 
         
-        buzz_words = generate_buzz(NUMBER_OF_BUZZ)
+        buzz_words = generate_buzz(twitest, NUMBER_OF_BUZZ)
 
 
 

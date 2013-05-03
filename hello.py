@@ -61,6 +61,7 @@ class MainPage(webapp2.RequestHandler):
         twi_json = json.load(urllib.urlopen(twi_url))
         twitest = twi_json['results']
 
+
         '''
         key_name = category + address
         self.response.write(category)

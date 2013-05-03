@@ -16,7 +16,4 @@ def sync_twits(category, address, NUMBER_PER_PAGE):
                  + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
                  + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
                  + '500mi' + '&include_entities=true&result_type=mixed'
-
-    twi_json = json.load(urllib.urlopen(twi_url))
-    twitest = twi_json['results']
-    return twitest
+    return urllib.urlopen(twi_url).read()

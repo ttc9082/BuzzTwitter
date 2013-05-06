@@ -14,7 +14,7 @@
 /log/*.log
 /tmp
 
-
+/.idea
 /*.*xml
 /*.pyc
 /.DS_Store

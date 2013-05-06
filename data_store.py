@@ -22,7 +22,7 @@ def has_key(address, category):
     if q.fetch(1):
         print '+====================================+'
         print 'cache found!'
-        # print '+====================================+'
+        print '+====================================+'
         return q.fetch(1)[0]
     else:
         return False
@@ -34,7 +34,7 @@ def retrieve_data(address, category):
     q.order("-address")
     print '+====================================+'
     print 'return results!'
-    # print '+====================================+'
+    print '+====================================+'
     return q.fetch(1)[0].results
 
 def store_data(address, category, jsonstr):
@@ -45,6 +45,6 @@ def store_data(address, category, jsonstr):
     twi.put()
     print '+====================================+'
     print 'cache saved!'
-    # print '+====================================+'
+    print '+====================================+'
     return True
 

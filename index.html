@@ -1,29 +1,18 @@
 <html>
-
-<head>
-  <style>
-    table
-      {
-        border-collapse:collapse;
-      }
-    table, td, th
-      {
-        border:1px solid black;
-      }
-  </style>
-</head>
-
+  <head>
+    <style>
+      table
+        {
+          border-collapse:collapse;
+        }
+      table, td, th
+        {
+          border:1px solid black;
+        }
+    </style>
+  </head>
 
   <body>
-<!--     {% for greeting in greetings %}
-      {% if greeting.author %}
-        <b>{{ greeting.author }}</b> wrote:
-      {% else %}
-        An anonymous person wrote:
-      {% endif %}
-      <blockquote>{{ greeting.content|escape }}</blockquote>
-    {% endfor %} -->
-
     <form action="/" method="post">
       <div>Location: <textarea name="location" rows="1" cols="60"></textarea></div>
       <div>Category: <textarea name="category" rows="1" cols="60"></textarea></div>
@@ -34,10 +23,34 @@
     <hr>
     
     <div id = "result">
+      {% for struct in final_structs %}
+      <ul> 
+        <li>Buzz Word: {{ struct['buzz_word'] }}</li>
+        <li>Sentiment Analysis: {{ struct['sentiment'] }}</li>
 
+        <table>
+          <tr>
+            <th>From</th>
+            <th>Profile</th>
+            <th>Text</th>
+            <th>created_at</th>
+            <th>location</th>
+          </tr>
+        {% for twit in struct['sample'] %}
+          <tr>
+            <td>{{ twit['from_user_name'] or "" }} </td>
+            <td><img src={{ twit['profile_image_url'] or "" }}> </td>
+            <td>{{ twit['text'] or "" }} </td>
+            <td>{{ twit['created_at'] or "" }} </td>
+            <td>{{ twit['location'] or "" }} </td>
+          </tr>
+        {% endfor %} 
+        </table> 
 
-      <table>
+      </ul>
+      {% endfor %}
 
+<!--       <table>
         <tr>
           <th>id</th>
           <th>from_user_name</th>
@@ -46,7 +59,6 @@
           <th>location</th>
           <th>profile_image</th>
         </tr>
-
         {% for twit in twitest %}
           <tr>
             <td>{{ twit['id'] }} </td>
@@ -57,10 +69,10 @@
             <td><img src={{ twit['profile_image_url'] or "" }}> </td>
           </tr>
         {% endfor %} 
+      </table>  -->
 
-      </table> 
-        {{ buzz }}
-      <!-- twit : {{ twitest }} -->
+
+
     </div>
 
   </body>

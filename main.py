@@ -9,6 +9,7 @@ import webapp2
 from client import *
 from data_store import *
 from buzz_generator import *
+from analyst import *
 
 JINJA_ENVIRONMENT = jinja2.Environment(
     loader=jinja2.FileSystemLoader(os.path.dirname(__file__)))
@@ -25,6 +26,7 @@ class MainPage(webapp2.RequestHandler):
 
         NUMBER_PER_PAGE = '100'
         NUMBER_OF_BUZZ = 10
+        NUMBER_OF_TWITS_PER_BUZZ = 4
 
         # twitest = sync_twits(category, address, NUMBER_PER_PAGE)
         if has_key(address, category):
@@ -34,19 +36,13 @@ class MainPage(webapp2.RequestHandler):
             store_data(address, category, jsonstr)
 
         twi_json = json.loads(jsonstr)
-        
-        buzz_words = generate_buzz(jsonstr, NUMBER_OF_BUZZ)
-
-
-
-
-
-
         twitest = twi_json['results']
-        
+
+        buzz_words = generate_buzz(twitest, NUMBER_OF_BUZZ)
+        final_structs = generate_struct(twitest, buzz_words, NUMBER_OF_TWITS_PER_BUZZ)
+
         template_values = {
-                            'twitest': twitest,
-                            'buzz': buzz_words
+                            'final_structs': final_structs,
                             }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')

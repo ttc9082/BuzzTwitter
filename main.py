@@ -23,8 +23,8 @@ class MainPage(webapp2.RequestHandler):
         category = self.request.get('category')
         address = self.request.get('location').replace(" ", "+")
 
-        NUMBER_PER_PAGE = '5'
-        NUMBER_OF_BUZZ = 2
+        NUMBER_PER_PAGE = '100'
+        NUMBER_OF_BUZZ = 10
 
         # twitest = sync_twits(category, address, NUMBER_PER_PAGE)
         if has_key(address, category):
@@ -46,6 +46,7 @@ class MainPage(webapp2.RequestHandler):
         
         template_values = {
                             'twitest': twitest,
+                            'buzz': buzz_words
                             }
 
         template = JINJA_ENVIRONMENT.get_template('index.html')

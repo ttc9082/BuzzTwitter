@@ -35,13 +35,13 @@ def retrieve_data(address, category):
     print '+====================================+'
     print 'return results!'
     print '+====================================+'
-    return q.fetch(1)[0].results
+    return q.fetch(1)
 
 def store_data(address, category, jsonstr):
     twi = twitter(
                 address=address,
                 category=category,
-                results=jsonstr)
+                results=json.dumps(jsonstr))
     twi.put()
     print '+====================================+'
     print 'cache saved!'

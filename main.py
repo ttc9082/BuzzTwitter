@@ -24,19 +24,26 @@ class MainPage(webapp2.RequestHandler):
         category = self.request.get('category')
         address = self.request.get('location').replace(" ", "+")
 
-        NUMBER_PER_PAGE = '1000'
+        NUMBER_PER_PAGE = '100'
         NUMBER_OF_BUZZ = 10
         NUMBER_OF_TWITS_PER_BUZZ = 4
 
         # twitest = sync_twits(category, address, NUMBER_PER_PAGE)
         if has_key(address, category):
-            jsonstr = retrieve_data(address, category)
+            jsonstr = []
+            pages = retrieve_data(address, category)
+            for i in range(len(pages)):
+                jsonstr.append(json.loads(pages[i].results))
+            print jsonstr
         else:
             jsonstr = sync_twits(category, address, NUMBER_PER_PAGE)
-            store_data(address, category, jsonstr)
+            print jsonstr
+            for pages in jsonstr:
+                store_data(address, category, pages)
 
-        twi_json = json.loads(jsonstr)
-        twitest = twi_json['results']
+        # twi_json = json.loads(jsonstr)
+        # twitest = twi_json['results']
+        twitest = jsonstr
 
         buzz_words = generate_buzz(twitest, NUMBER_OF_BUZZ)
         final_structs = generate_struct(twitest, buzz_words, NUMBER_OF_TWITS_PER_BUZZ)

@@ -30,10 +30,11 @@ def generate_struct(twitest, buzz_words, NUMBER_OF_TWITS_PER_BUZZ):
         temp_dict['buzz_word'] = buzzWord
         temp_dict['matched_twits'] = []
         temp_array = ""
-        for twit in twitest:
-            if buzzWord.lower() in twit["text"].lower():
-                temp_dict['matched_twits'].append(twit)
-                temp_array = temp_array + twit["text"]
+        for twits in twitest:
+            for tt in twits:
+                if buzzWord.lower() in tt["text"].lower():
+                    temp_dict['matched_twits'].append(tt)
+                    temp_array = temp_array + tt["text"]
         temp_dict['sentiment'] = afinn_sentiment(temp_array)
         min_num = min( len(temp_dict['matched_twits']), NUMBER_OF_TWITS_PER_BUZZ )
         temp_dict['sample'] = random.sample(temp_dict['matched_twits'], min_num)

@@ -1,41 +1,149 @@
 <html>
   <head>
-    <style>
-      table
-        {
-          border-collapse:collapse;
-        }
-      table, td, th
-        {
-          border:1px solid black;
-        }
-    </style>
+    <STYLE type="text/css">
+body{
+  font-family:"Lucida Grande", "Lucida Sans Unicode", Verdana, Arial, Helvetica, sans-serif;
+  font-size:15px;
+}
+
+p, h1, form, button{border:0; margin:0; padding:0;}
+
+.spacer{clear:both; height:1px;}
+
+/* ----------- My Form ----------- */
+.myform{
+  margin:0 auto;
+  width:100%;
+  padding:14px;
+}
+
+/* ----------- stylized ----------- */
+#stylized{
+  border-top:solid 2px #b7ddf2;
+  border-bottom:solid 2px #b7ddf2;
+  background:#ebf4fb;
+}
+#stylized label{
+  display:block;
+  font-weight:bold;
+  text-align:right;
+  width:140px;
+  float:left;
+}
+#stylized .small{
+  color:#666666;
+  display:block;
+  font-size:11px;
+  font-weight:normal;
+  text-align:right;
+  width:140px;
+}
+#stylized input{
+  float:left;
+  font-size:12px;
+  padding:4px 2px;
+  border:solid 1px #aacfe4;
+  width:200px;
+  margin:2px 0 20px 10px;
+}
+#stylized button{
+  clear:both;
+  margin-left:150px;
+  width:125px;
+  height:31px;
+  background:#666666 url(img/button.png) no-repeat;
+  text-align:center;
+  line-height:31px;
+  color:#FFFFFF;
+  font-size:11px;
+  font-weight:bold;
+}
+
+/* ----------- table ----------- */
+table {
+  font: 12px/24px Verdana, Arial, Helvetica, sans-serif;
+  border-collapse: collapse;
+  width: 100%;
+  }
+
+.col1,.col5{width: 10%;}
+.col4{width: 20%;}
+.col2{width: 5%;}
+.col3{width: 55%;}
+
+tr.blue th {
+  border-top: 2px solid #b7ddf2;;
+  border-bottom: 2px solid #b7ddf2;;
+  background: #ebf4fb;
+  }
+
+td {
+  border-bottom: 1px solid #CCC;
+  padding: 0 0.5em;
+  }
+
+/* ----------- result ----------- */
+#result p{
+  font-size:14px;
+  font-weight:bold;
+}
+#title{
+  padding-top:40px;
+  padding-bottom:10px;
+}
+
+#result h1 {
+  font-size:25px;
+  font-weight:bold;
+  margin-bottom:10px;
+  color:#666666;
+  border-bottom:solid 1px #b7ddf2;
+  padding-top:40px;
+  text-align:center;
+}
+    </STYLE>
   </head>
 
   <body>
-    <form action="/" method="post">
-      <div>Location: <textarea name="location" rows="1" cols="60"></textarea></div>
-      <div>Category: <textarea name="category" rows="1" cols="60"></textarea></div>
-      <br></br>
-      <div><input type="submit" value="Search"></div>
-    </form>
+    <div id="stylized" class="myform">
+      <form action="/" method="post">
+        <label>Location
+        <span class="small">Enter a state</span>
+        </label>
+        <input type="text" name="location" id="location" />
 
-    <hr>
-    
-    <div id = "result">
+        <label>Category
+        <span class="small">Enter a topic</span>
+        </label>
+        <input type="text" name="category" id="category" />
+
+        <button type="submit">Search</button>
+        <div class="spacer"></div>
+      </form>
+    </div>
+
+    <div id = "result" class = "display">
+      <h1>Search Result</h1>
       {% for struct in final_structs %}
-      <ul> 
-        <li>Buzz Word: {{ struct['buzz_word'] }}</li>
-        <li>Sentiment Analysis: {{ struct['sentiment'] }}</li>
-
+        <div id = "title">
+          <p>Buzz Word: {{ struct['buzz_word'] }}</p>
+          <p>Sentiment: {{ struct['sentiment'] }}</p>
+        </div>
         <table>
-          <tr>
+        <colgroup>
+          <col class="col1" />
+          <col class="col2" />
+          <col class="col3" />
+          <col class="col4" />
+          <col class="col5" />
+        </colgroup>
+        <tr class="blue">
             <th>From</th>
             <th>Profile</th>
             <th>Text</th>
-            <th>created_at</th>
-            <th>location</th>
-          </tr>
+            <th>Created At</th>
+            <th>Location</th>
+        </tr>
         {% for twit in struct['sample'] %}
           <tr>
             <td>{{ twit['from_user_name'] or "" }} </td>
@@ -46,32 +154,7 @@
           </tr>
         {% endfor %} 
         </table> 
-
-      </ul>
       {% endfor %}
-
-<!--       <table>
-        <tr>
-          <th>id</th>
-          <th>from_user_name</th>
-          <th>text</th>
-          <th>created_at</th>
-          <th>location</th>
-          <th>profile_image</th>
-        </tr>
-        {% for twit in twitest %}
-          <tr>
-            <td>{{ twit['id'] }} </td>
-            <td>{{ twit['from_user_name'] or "" }} </td>
-            <td>{{ twit['text'] or "" }} </td>
-            <td>{{ twit['created_at'] or "" }} </td>
-            <td>{{ twit['location'] or "" }} </td>
-            <td><img src={{ twit['profile_image_url'] or "" }}> </td>
-          </tr>
-        {% endfor %} 
-      </table>  -->
-
-
 
     </div>
 

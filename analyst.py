@@ -11,7 +11,17 @@ import random
 def afinn_sentiment(myString):
     afinn = dict(map(lambda (k,v): (k,int(v)), [ line.split('\t') for line in open("AFINN-111.txt") ]))
     score = sum(map(lambda word: afinn.get(word, 0), myString.lower().split()))
-    return score
+    if score >= 10:
+        review = "very positive"
+    elif score > 0:
+        review = "positive"
+    elif score == 0:
+        review = "neutral"
+    elif score >= -10:
+        review = "negative"
+    else:
+        review = "very negative"
+    return review
 
 def generate_struct(twitest, buzz_words, NUMBER_OF_TWITS_PER_BUZZ):
     final_struct = []
@@ -24,10 +34,7 @@ def generate_struct(twitest, buzz_words, NUMBER_OF_TWITS_PER_BUZZ):
             if buzzWord.lower() in twit["text"].lower():
                 temp_dict['matched_twits'].append(twit)
                 temp_array = temp_array + twit["text"]
-        # print "______________________________________________________________________________________________________"
-        # print len(temp_array.split(" "))
-
-        temp_dict['sentiment'] = afinn_sentiment("temp_array")
+        temp_dict['sentiment'] = afinn_sentiment(temp_array)
         min_num = min( len(temp_dict['matched_twits']), NUMBER_OF_TWITS_PER_BUZZ )
         temp_dict['sample'] = random.sample(temp_dict['matched_twits'], min_num)
         final_struct.append(temp_dict)

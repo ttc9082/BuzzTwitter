@@ -24,9 +24,9 @@ class MainPage(webapp2.RequestHandler):
         category = self.request.get('category')
         address = self.request.get('location').replace(" ", "+")
 
-        NUMBER_PER_PAGE = '1000'
+        NUMBER_PER_PAGE = '100'
         NUMBER_OF_BUZZ = 10
-        NUMBER_OF_TWITS_PER_BUZZ = 4
+        NUMBER_OF_TWITS_PER_BUZZ = 5
 
         # twitest = sync_twits(category, address, NUMBER_PER_PAGE)
         if has_key(address, category):

@@ -34,10 +34,10 @@ class MainPage(webapp2.RequestHandler):
             pages = retrieve_data(address, category)
             for i in range(len(pages)):
                 jsonstr.append(json.loads(pages[i].results))
-            print jsonstr
+            # print jsonstr
         else:
             jsonstr = sync_twits(category, address, NUMBER_PER_PAGE)
-            print jsonstr
+            # print jsonstr
             for pages in jsonstr:
                 store_data(address, category, pages)
 

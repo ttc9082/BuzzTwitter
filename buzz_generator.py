@@ -2,12 +2,12 @@ from collections import Counter
 import string
 
 def generate_buzz(twitest, NUMBER_OF_BUZZ):
-    print type(twitest) , 'ttc'
+    # print type(twitest) , 'ttc'
     total = ''
     for twits in twitest:
-        print type(twits)
+        # print type(twits)
         for tt in twits:
-            print type(tt)
+            # print type(tt)
             total = total + ' ' + tt['text']
     list_of_words = total.split(' ')
     list_of_strs = []
@@ -28,9 +28,9 @@ def generate_buzz(twitest, NUMBER_OF_BUZZ):
     # print 'cnt=',  cnt
     # print '====================================='
     rank = sorted(cnt.items(), key=lambda item: item[1], reverse=True)
-    print '====================================='
-    print 'rank=',  rank
-    print '====================================='
+    # print '====================================='
+    # print 'rank=',  rank
+    # print '====================================='
     lookup_num = 0
     buzz_num = 0
     buzz = []

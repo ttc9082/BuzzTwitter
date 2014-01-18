@@ -28,16 +28,16 @@ class MainPage(webapp2.RequestHandler):
         NUMBER_OF_BUZZ = 10
         NUMBER_OF_TWITS_PER_BUZZ = 4
 
-        # twitest = sync_twits(category, address, NUMBER_PER_PAGE)
+        twitest = sync_twits(category, address, NUMBER_PER_PAGE)
         if has_key(address, category):
             jsonstr = []
             pages = retrieve_data(address, category)
             for i in range(len(pages)):
                 jsonstr.append(json.loads(pages[i].results))
-            # print jsonstr
+            print jsonstr
         else:
             jsonstr = sync_twits(category, address, NUMBER_PER_PAGE)
-            # print jsonstr
+            print jsonstr
             for pages in jsonstr:
                 store_data(address, category, pages)
 

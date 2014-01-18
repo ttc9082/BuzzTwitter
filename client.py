@@ -19,11 +19,12 @@ def sync_twits(category, address, NUMBER_PER_PAGE):
     geo_json = json.load(urllib.urlopen(geo_url))
     lat = geo_json['results'][0]['geometry']['location']['lat']
     lng = geo_json['results'][0]['geometry']['location']['lng']
-    twi_url = 'http://search.twitter.com/search.json?q=' + category + \
-                 '&rpp=' + NUMBER_PER_PAGE + '&geocode=' \
+    twi_url = 'https://api.twitter.com/1.1/search/tweets.json?q=' + category + \
+                 '&count=' + NUMBER_PER_PAGE + '&geocode=' \
                  + str(geo_json['results'][0]['geometry']['location']['lat']) + ',' \
                  + str(geo_json['results'][0]['geometry']['location']['lng']) + ',' \
                  + '500mi' + '&include_entities=true&result_type=mixed'
+    print twi_url
     result = [json.loads(urllib.urlopen(twi_url).read())['results']]
     print twi_url
     # print json.loads(urllib.urlopen(twi_url).read())['next_page']

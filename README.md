@@ -4,8 +4,8 @@ Cloud Computing Assignment
 
 ## a team work by 
 
-Tianqi Tong
-Zhang Zhang
+- Tianqi Tong
+- Zhang Zhang
 
 ## Implementation
 
